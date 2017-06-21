@@ -199,7 +199,41 @@ Scala
 1.+(2)    // 산술 연산자들도 메소드
 1.to(5)   // Range(1, 2, 3, 4, 5)
 1 to 5    // method 호출 시 . () 생략 가능
+```
 
+## Function
+Python
+```python
+def add(a, b): 
+    return a + b
+```
+Scala
+```scala
+def add(a:Int, b:Int):Int = {
+  return a + b
+}
+
+def add(a:Int, b:Int) = {     // 리턴 타입 생략 가능
+  a + b                       // 보통 return 키워드 생략, 마지막 실행문이 리턴됨
+}                             // 1줄인 경우 {}도 생략 가능
+```
+
+## Anonymous Function
+Python
+```python
+def exec(func):
+    return func(1, 2)
+
+exec(lambda a, b: a + b)      # 코드 조각 자체를 파라메터로 전달
+```
+Scala
+```scala
+def exec(func: (Int, Int) => Int) = {
+  func(1, 2)
+}
+
+exec((a, b) => a + b)   // exec()에서 타입을 정의해서 생략 가능
+exec(_ + _)             // 파라메터가 실행문 중 한번만 나오고, 순서대로 매핑되는 경우 _로 표시 가능
 ```
 
 ## If & Match
@@ -493,6 +527,17 @@ Python
 Scala
 ```scala
 
+```
+
+## Apply & Update methods
+- apply(), update() method는 이름 생략 가능
+```scala
+val arr = Array(1, 2, 3, 4)
+arr(1)
+arr.apply(1)        // .apply 생략 가능
+
+arr(1) = 0
+arr.update(1, 0)    // = 중위 연산자로 치환 가능
 ```
 
 ## Companion Object & apply() method
