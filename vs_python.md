@@ -5,12 +5,12 @@
 ## Install
 - Download : http://scala-lang.org/download/all.html
 - set Environment Variable
-  |Environment | Variable | Value (example) |
-  |--|--|--|
-  |Unix|$SCALA_HOME|/usr/local/share/scala|
-  ||$PATH|$PATH:$SCALA_HOME/bin|
-  |Windows|%SCALA_HOME%|c:\Progra~1\Scala|
-  ||%PATH%|%PATH%;%SCALA_HOME%\bin|
+  Environment | Variable | Value (example)
+  --|--|--
+  Unix|$SCALA_HOME | /usr/local/share/scala
+  | $PATH | $PATH:$SCALA_HOME/bin
+  Windows | %SCALA_HOME% | c:\Progra~1\Scala
+  | %PATH% | %PATH%;%SCALA_HOME%\bin
 
 ## REPL shell
 ### 실행
@@ -39,18 +39,18 @@ python3 {filename}.py
 ```
 Scala
 ```bash
-# REPL
+# 1. excute single file
 scala {filename}.scala
 
-# compile : class file(java bytecode) 생성
+# 2-1. compile : class file(java bytecode) 생성
 scalac {filename}.scala
 scalac -d {directory} {filename}.scala    # class file 저장 경로 지정
 
-# excute
+# 2-2-1. excute
 scala {classname}
 scala -cp {directory} {classname}         # class file 저장 경로 지정
 
-# excute with Java
+# 2-2-2. excute with Java interpreter
 java -cp $SCALA_HOME/lib/scala-library.jar:{directory} {classname}
 ```
 
@@ -83,6 +83,9 @@ object HelloWorld {
 object HelloWorld extends App {
   println("Hello, world!")
 }
+
+// 또는(class로 컴파일은 불가)
+println("Hello, world!")
 ```
 
 ## Comment
@@ -150,6 +153,10 @@ a = 1
 s = "abcd"
 
 a = "abcd"  # 가능, 값 할당 시 타입 결정
+
+# 형변환
+str(2)
+float(2)
 ```
 Scala
 ```scala
@@ -175,6 +182,24 @@ c = 0.5f     // 가능, Long : l/L, Double : d/D, Float : f/F 를 같이 씀
 var d:Any = 1
 d = "abcd"   // 가능, scala의 모든 타입은 객체로 Any는 최상위 객체
              // 컴파일 시 오류 체크 불가, 각 타입에서 제공하는 연산자 등 사용 불가
+
+// scala의 모든 데이터 타입은 클래스로 형변환 시 메소드 사용, 인자 값이 없는 경우 () 생략 가능
+2.toString
+2.toFloat
+```
+
+## 연산자
+Python
+```python
+1 + 2
+```
+Scala
+```scala
+1 + 2
+1.+(2)    // 산술 연산자들도 메소드
+1.to(5)   // Range(1, 2, 3, 4, 5)
+1 to 5    // method 호출 시 . () 생략 가능
+
 ```
 
 ## If & Match
@@ -303,7 +328,7 @@ a(0)
 a.slice(0, 2)
 // update
 a(1) = 0      // 오류    
-// extend
+// extend, ++, :::, :+, +: 등 연산자는 collection 공통 제공
 a ++ List(7, 8)
 a ::: List(7, 8)
 ```
@@ -343,11 +368,39 @@ a ++ Set(3, 4, 5)       // Set(5, 1, 2, 3, 4), Set은 입력 순서 보장 안�
 ## Dict vs Map
 Python
 ```python
-
+d = {1: 'a', 2: 'b'}
+# get value
+d[1]                    # a
+d.get(1)
+d[3]                    # 오류
+d.get(3)                # None
+d.get(3, 'default')     # defaultE
+# get keys
+d.keys()
+# get values
+d.values()
+# get tuple list
+d.items()
+# update
+d[1] = 'c'
+# exist
+3 in d
 ```
 Scala
 ```scala
-
+val m = Map(1 -> "a", 2 -> "b")
+// get value
+m(1)
+m.get(1)
+m(3)                    // 오류
+m.get(3)                // None
+m.get(3, "default")     // default
+// get keys, keysIterator도 있음 
+m.keys
+// get values
+m.values
+// exist
+m contains 3
 ```
 
 ## Tuple
@@ -361,29 +414,55 @@ t3 = (1, "coffee", 500)
 t3[1]       # coffee
 ```
 Scala
+- 왜 Array, List, Set, Map랑 다르게 Tuple만 new 키워드를 쓰나? -> Companion Object & apply() method 참조
 ```scala
 val t1 = new Tuple1(1)
 val t2 = new Tuple2(1, "first")
+val t2 = (1, "coffee")                    // 생략 가능
+val t2 = 1 -> "first"                     // 2개일 때만 가능
 val t3 = new Tuple3(1, "coffee", 500)     // max 22개까지 사용 가능
-val t3 = (1, "coffee", 500)               // 생략 가능
+
 // get value
 t3._2     // coffee, tuple는 1부터 시작
 ```
 
 ## Array
+Python
+- array 없음
 Scala
 ```scala
-
+val a = Array(1, 2, 3)
+// get value
+a(0)
+// update, 배열 크기는 불변/ 내용은 수정 가능
+a(0) = 0
 ```
 
 ## Mutable Collections
-Python
-```python
-
-```
+- 꼭 필요하다면 scala mutable collection 이나 java collection을 사용 가능
 Scala
 ```scala
+import scala.collection.mutable._
+import scala.collection.mutable.{Map => MMap}
+import collection.JavaConverters._
+import java.util.{List => JList, ArrayList => JArrayList}
 
+// scala 가변 클래스들
+val arr = ArrayBuffer(1, 2, 3)
+val list = ListBuffer(1, 2, 3)
+val set = Set(1, 2, 3)
+val map = MMap(1 -> "a", 2 -> "b")
+
+// 굳이 java class를 써보자면
+val jList:JList[Int] = new JArrayList[Int]()
+jList.add(1)
+jList.add(2)
+jList.add(3)
+
+// scala to java
+val javaListFromScala = list.asJava
+// java to scala
+val scalaListFromJava = jList.asScala
 ```
 
 ## Functional Combinator
@@ -396,93 +475,45 @@ Scala
 
 ```
 
-## Function
+## Object
 Python
 ```python
-def add(a, b): 
-    return a + b
+
 ```
 Scala
 ```scala
-def add(a:Int, b:Int):Int = {
-  return a + b
+
+```
+
+## Class
+Python
+```python
+
+```
+Scala
+```scala
+
+```
+
+## Companion Object & apply() method
+- Companion Object : Class와 똑같은 이름의 Object, apply() method를 이용해서 factory를 만들 때 사용
+
+Companion Object with apply()
+```scala
+class Hello(name: String) {
+    def say() = {
+        println("hello " + name)
+    }
 }
-
-def add(a:Int, b:Int) = {     // 리턴 타입 생략 가능
-  a + b                       // 보통 return 키워드 생략, 마지막 실행문이 리턴됨
-}                             // 1줄인 경우 {}도 생략 가능
-```
-
-## Anonymous Function
-Python
-```python
-def exec(func):
-    return func(1, 2)
-
-exec(lambda a, b: a + b)      # 코드 조각 자체를 파라메터로 전달
-```
-Scala
-```scala
-def exec(func: (Int, Int) => Int) = {
-  func(1, 2)
+object Hello {
+    def apply(name: String) = {
+        new Hello(name)
+    }
 }
-
-exec((a, b) => a + b)   // exec()에서 타입을 정의해서 생략 가능
-exec(_ + _)             // 파라메터가 실행문 중 한번만 나오고, 순서대로 매핑되는 경우 _로 표시 가능
+val h1 = new Hello("scala")
+h1.say()
+val h2 = Hello.apply("scala")
+h2.say()
+val h3 = Hello("scala")
+h3.say()
 ```
-<!--
-## Class & Object
-Python
-```python
-class HelloWorld():
-    def __init__(self, name):
-        self.name = name
-
-    def main(self):
-        print("Hello, %s" % self.name)
-
-if __name__ == "__main__":
-    a = HelloWorld("world")
-    a.main()
-```
-Scala
-```scala
-// singleton object
-object HelloWorld {
-  def main(args: Array[String]): Unit = {
-    println("Hello, world!")
-  }
-}
-
-// class
-
-```
-
-## Import
-Python
-```python
-
-```
-Scala
-```scala
-
-```
-
-## Exception
-Python
-```python
-
-```
-Scala
-```scala
-
-```
-
-## 추가
-파일 읽고 쓰기
-
-
-
-## 참조
-- https://twitter.github.io/scala_school/ko/
--->
