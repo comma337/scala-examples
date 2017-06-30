@@ -3,7 +3,6 @@
 - 온라인 코드 실행 : https://scalafiddle.io
 
 ## Install
-- Required : J
 - Download : http://scala-lang.org/download/all.html
 - set Environment Variable
 
