@@ -3,10 +3,12 @@
 - 온라인 코드 실행 : https://scalafiddle.io
 
 ## Install
+- Required : J
 - Download : http://scala-lang.org/download/all.html
 - set Environment Variable
+
   Environment | Variable | Value (example)
-  --|--|--
+  ---|---|---
   Unix|$SCALA_HOME | /usr/local/share/scala
   | $PATH | $PATH:$SCALA_HOME/bin
   Windows | %SCALA_HOME% | c:\Progra~1\Scala
@@ -449,6 +451,7 @@ t3[1]       # coffee
 ```
 Scala
 - 왜 Array, List, Set, Map랑 다르게 Tuple만 new 키워드를 쓰나? -> Companion Object & apply() method 참조
+
 ```scala
 val t1 = new Tuple1(1)
 val t2 = new Tuple2(1, "first")
@@ -463,6 +466,7 @@ t3._2     // coffee, tuple는 1부터 시작
 ## Array
 Python
 - array 없음
+
 Scala
 ```scala
 val a = Array(1, 2, 3)
@@ -474,6 +478,7 @@ a(0) = 0
 
 ## Mutable Collections
 - 꼭 필요하다면 scala mutable collection 이나 java collection을 사용 가능
+
 Scala
 ```scala
 import scala.collection.mutable._
@@ -499,7 +504,7 @@ val javaListFromScala = list.asJava
 val scalaListFromJava = jList.asScala
 ```
 
-## Functional Combinator
+## Functional Combinators
 Python
 ```python
 
@@ -531,6 +536,7 @@ Scala
 
 ## Apply & Update methods
 - apply(), update() method는 이름 생략 가능
+
 ```scala
 val arr = Array(1, 2, 3, 4)
 arr(1)
@@ -543,7 +549,6 @@ arr.update(1, 0)    // = 중위 연산자로 치환 가능
 ## Companion Object & apply() method
 - Companion Object : Class와 똑같은 이름의 Object, apply() method를 이용해서 factory를 만들 때 사용
 
-Companion Object with apply()
 ```scala
 class Hello(name: String) {
     def say() = {
