@@ -217,6 +217,28 @@ def add(a:Int, b:Int):Int = {
 def add(a:Int, b:Int) = {     // 리턴 타입 생략 가능
   a + b                       // 보통 return 키워드 생략, 마지막 실행문이 리턴됨
 }                             // 1줄인 경우 {}도 생략 가능
+
+def subStr(str: String, len: Int = 10, tail: String = "...") = {
+if (str.length > len)
+    str.substring(0, len) + tail
+else
+    str
+}
+
+println(subStr("abcdefghijklmnopqrstuvwxyz", 5))                        // abcde...
+println(subStr("abcdefghijklmnopqrstuvwxyz", tail = "-"))               // abcdefghij-
+println(subStr("abcdefghijklmnopqrstuvwxyz", tail = "-", len = 5))      // abcde-
+```
+
+## Option, Some, None
+- null 보다 Option 사용 권장
+- Option[T] : 값이 있을 수도/ 없을 수도 있을 때, Some[T] : 값이 있는 경우, None : 값이 없다는 의미의 값
+
+Scala
+```scala
+var name:Option[String] = None    // name: Option[String] = None
+name.getOrElse("no name")         // no name
+name = Some("sing")
 ```
 
 ## Anonymous Function
@@ -363,7 +385,7 @@ a(0)
 a.slice(0, 2)
 // update
 a(1) = 0      // 오류    
-// extend, ++, :::, :+, +: 등 연산자는 collection 공통 제공
+// extend, ++, :::, :+(append), +:(prepend) 등 연산자는 collection 공통 제공
 a ++ List(7, 8)
 a ::: List(7, 8)
 ```
@@ -504,13 +526,34 @@ val scalaListFromJava = jList.asScala
 ```
 
 ## Functional Combinators
-Python
-```python
+- 
 
-```
 Scala
 ```scala
-
+scala> val numbers = List(1, 2, 3, 4)
+numbers: List[Int] = List(1, 2, 3, 4)
+// map
+scala> numbers.map((i: Int) => i * 2)
+res0: List[Int] = List(2, 4, 6, 8)
+// foreach
+scala> numbers.foreach((i: Int) => print(i * 2))
+2468
+// filter
+scala> numbers.filter(_ > 2)
+res2: List[Int] = List(3, 4)
+// zip
+scala> List(1, 2, 3).zip(List("a", "b", "c"))
+res3: List[(Int, String)] = List((1,a), (2,b), (3,c))
+// flatten
+scala> List(List(1, 2), List(3, 4)).flatten
+res4: List[Int] = List(1, 2, 3, 4)
+// flatMap
+scala> val nestedNumbers = List(List(1, 2), List(3, 4))
+nestedNumbers: List[List[Int]] = List(List(1, 2), List(3, 4))
+scala> nestedNumbers.flatMap(x => x.map(_ * 2))
+res0: List[Int] = List(2, 4, 6, 8)
+scala> nestedNumbers.map((x: List[Int]) => x.map(_ * 2)).flatten
+res1: List[Int] = List(2, 4, 6, 8)
 ```
 
 ## Object
