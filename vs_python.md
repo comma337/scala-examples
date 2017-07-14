@@ -94,9 +94,7 @@ Python
 ```python
 # single line
 
-"""
-multiple line
-"""
+# multiple line : 없음
 ```
 Scala
 ```scala
@@ -526,8 +524,6 @@ val scalaListFromJava = jList.asScala
 ```
 
 ## Functional Combinators
-- 
-
 Scala
 ```scala
 scala> val numbers = List(1, 2, 3, 4)
@@ -554,26 +550,6 @@ scala> nestedNumbers.flatMap(x => x.map(_ * 2))
 res0: List[Int] = List(2, 4, 6, 8)
 scala> nestedNumbers.map((x: List[Int]) => x.map(_ * 2)).flatten
 res1: List[Int] = List(2, 4, 6, 8)
-```
-
-## Object
-Python
-```python
-
-```
-Scala
-```scala
-
-```
-
-## Class
-Python
-```python
-
-```
-Scala
-```scala
-
 ```
 
 ## Apply & Update methods
@@ -608,4 +584,83 @@ val h2 = Hello.apply("scala")
 h2.say()
 val h3 = Hello("scala")
 h3.say()
+```
+
+## Class & Object
+- object : 어플리케이션 안에서 한번만 생성할 객체, 상수와 util method 모아둠
+- class : 반복 생성해서 사용할 객체
+
+Scala
+```scala
+class Person1 {
+  var name: String = ""   // 읽고 쓰기 가능(public), getter/setter
+  val age: Int = 0    // 읽기만 가능, setter
+
+  private val mind: String = "happy"  // 클래스 외부에서 접근 불가, private
+
+  def feeling(): String = mind
+}
+
+class Person2(var name: String,   // getter/setter
+              val age: Int,       // setter
+              mind: String) {     // private
+  def feeling(): String = mind
+}
+
+class Person3(var name: String,
+              val varAge: Int = 0) {
+  private var _age:Int = varAge
+
+  def age: Int = _age
+
+  def age_=(newAge: Int) = {
+    if(newAge > _age)
+      _age = newAge
+  }
+}
+
+class Person4(var name: String,
+              val age: Int) {
+  def this(name: String) = this(name, 0)    // 생성자 추가
+}
+
+class Person5(var name: String,
+              val age: Int)
+
+object Person5 {
+  def apply(name: String, age: Int): Person5 = new Person5(name, age)
+}
+
+case class Person6(var name: String,
+                   age: Int)    // val로 간주
+
+object demo extends App {
+  val sing1 = new Person1()
+  sing1.name = "sing"
+  println(s"${sing1.name}, ${sing1.age}, ${sing1.feeling}")
+
+  val sing2 = new Person2("sing", 10, "happy")
+  println(s"${sing2.name}, ${sing2.age}, ${sing2.feeling}")
+
+  val sing3 = new Person3("sing", 10)
+  sing3.age = 7     // 무시됨
+  println(s"${sing3.name}, ${sing3.age}")     // sing, 10
+
+  val sing4 = new Person4("sing")
+  println(s"${sing4.name}, ${sing4.age}")     // sing, 0
+
+  val sing5 = Person5("sing", 10)
+  println(s"${sing5.name}, ${sing5.age}")     // sing, 10
+
+  val sing6 = Person6("sing", 10)
+  println(s"${sing6.name}, ${sing6.age}")     // sing, 10
+  sing6.name = "test"
+  println(s"${sing6.name}")     // test
+}
+```
+
+## Trait
+Scala
+```scala
+
 ```
